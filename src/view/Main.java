@@ -10,16 +10,12 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.TextContainer;
 
-import java.awt.*;
 import java.io.File;
-import java.io.IOException;
-import java.util.logging.FileHandler;
 
 /**
  * Created by pierre on 19/04/16.
  */
 public class Main extends Application {
-    private Desktop desktop = Desktop.getDesktop();
 
     public static void main(String[] args) {
         launch(args);

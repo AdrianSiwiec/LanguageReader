@@ -21,7 +21,7 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
+#*.jar To include libs jars
 *.war
 *.ear
 
