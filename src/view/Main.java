@@ -4,14 +4,18 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.TextContainer;
+import model.WordButton;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +39,14 @@ public class Main extends Application {
         grid.setPadding(new Insets(25, 25, 25, 25));
         FileChooser fileChooser = new FileChooser();
 
+        FlowPane flow = new FlowPane();
+
+        for(int i=0; i<40; i++) {
+            flow.getChildren().addAll(new WordButton("DUPA"), new WordButton("HAHH"), new WordButton("A"));
+        }
+
+        grid.getChildren().add(flow);
+
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -46,6 +58,9 @@ public class Main extends Application {
             }
         });
         grid.add(btn, 0, 0);
+
+
+
         path = new File(".").getAbsolutePath();
         String textFile=prepareFile(1);
         Text text=new Text();
@@ -55,7 +70,9 @@ public class Main extends Application {
             text.setText(textFile);
             text.autosize();
         }
-        primaryStage.setScene(new Scene(grid, 300, 250));
+        Scene scene = new Scene(grid, 300, 250);
+        primaryStage.setScene(scene);
+        scene.getStylesheets().add(Main.class.getResource("ViewStylesheet.css").toExternalForm());
         primaryStage.show();
     }
 

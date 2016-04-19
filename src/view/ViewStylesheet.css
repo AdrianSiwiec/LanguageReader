@@ -1,0 +1,11 @@
+.root {
+    -fx-background-color: white;
+}
+#wordButton {
+    -fx-font-weight: normal;
+    -fx-background-color: white;
+    -fx-padding: 1 3;
+}
+#wordButton:hover {
+    -fx-background-color: black;
+}
