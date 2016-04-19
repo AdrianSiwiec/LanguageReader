@@ -1,12 +1,12 @@
 package model;
 
 import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.parser.LocationTextExtractionStrategy;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
 import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 /**
@@ -31,17 +31,30 @@ public class TextContainer {
             TextExtractionStrategy strategy= new SimpleTextExtractionStrategy();
             StringBuilder builder = new StringBuilder();
             System.out.println("Reading pdf: "+file.toString()+"\nIt has "+reader.getNumberOfPages()+" pages");
+            String newPage;
+            String pageNumber;
             for(int page = 1; page<=reader.getNumberOfPages(); page++) {
                 builder.append(PdfTextExtractor.getTextFromPage(reader, page, strategy));
+                newPage=PdfTextExtractor.getTextFromPage(reader, page, strategy).toString();
+                pageNumber=Integer.toString(page)+".txt";
+                File out=new File(pageNumber);
+                FileWriter fw = new FileWriter(out);
+                fw.write(newPage);
+                fw.close();
+            //    System.out.println(":)"+newPage);
+
             }
             text = builder.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(text);
+    //S    System.out.println(text);
     }
 
     public String getText(){
+        return text;
+    }
+    public String toString(){
         return text;
     }
 }
