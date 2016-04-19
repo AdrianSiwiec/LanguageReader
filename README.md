@@ -1,5 +1,5 @@
 Wykonawcy projektu:
-Adrian Siwiec                                                                                     
+Adrian Siwiec \n                        
 Paweł Mader
 
 Celem projektu Language Reader jest stworzenie aplikacji umożliwiającej otwieranie plików pdf, a
