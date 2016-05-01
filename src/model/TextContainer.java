@@ -8,12 +8,15 @@ import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by pierre on 19/04/16.
  */
 public class TextContainer {
     private String text;
+    private ArrayList<String> words;
     public TextContainer(File file) {
         String filename = file.getAbsolutePath();
         String extension = "";
@@ -48,13 +51,15 @@ public class TextContainer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        words = new ArrayList<>(Arrays.asList(text.split("\\s")));
     //S    System.out.println(text);
     }
 
-    public String getText(){
-        return text;
-    }
     public String toString(){
         return text;
+    }
+
+    public ArrayList<String> getWords() {
+        return words;
     }
 }

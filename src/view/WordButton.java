@@ -1,5 +1,6 @@
-package model;
+package view;
 
+import controller.App;
 import javafx.scene.control.Button;
 
 /**
@@ -10,7 +11,7 @@ public class WordButton extends Button{
         super(text);
         setId("wordButton");
         setOnMouseEntered(event -> {
-           System.out.println(getLayoutX()+", "+ getLayoutY());
+            App.getController().showPopup(this);
         });
     }
 }
