@@ -6,10 +6,8 @@ import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
 import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by pierre on 19/04/16.
@@ -17,6 +15,7 @@ import java.util.Arrays;
 public class TextContainer {
     private String text;
     private ArrayList<String> words;
+    private ArrayList<Page> pages;
     public TextContainer(File file) {
         String filename = file.getAbsolutePath();
         String extension = "";
@@ -34,32 +33,37 @@ public class TextContainer {
             TextExtractionStrategy strategy= new SimpleTextExtractionStrategy();
             StringBuilder builder = new StringBuilder();
             System.out.println("Reading pdf: "+file.toString()+"\nIt has "+reader.getNumberOfPages()+" pages");
-            String newPage;
             String pageNumber;
+            pages=new ArrayList<>();
             for(int page = 1; page<=reader.getNumberOfPages(); page++) {
+                PdfReader reader1=new PdfReader(filename);
+                reader1.selectPages(String.valueOf(page));
                 builder.append(PdfTextExtractor.getTextFromPage(reader, page, strategy));
-                newPage=PdfTextExtractor.getTextFromPage(reader, page, strategy).toString();
-                pageNumber=Integer.toString(page)+".txt";
+
+                Page nextPage=new Page(PdfTextExtractor.getTextFromPage(reader1, 1).toString());
+                pages.add(nextPage);
+              /*  pageNumber=Integer.toString(page)+".txt";
                 File out=new File(pageNumber);
                 FileWriter fw = new FileWriter(out);
-                fw.write(newPage);
-                fw.close();
-            //    System.out.println(":)"+newPage);
-
+                fw.write(PdfTextExtractor.getTextFromPage(reader1, 1).toString());
+                fw.close();*/
             }
+            PageFactory PF = new PageFactory(300, pages);
+            pages = PF.refactorCollection();
             text = builder.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        words = new ArrayList<>(Arrays.asList(text.split("\\s")));
-    //S    System.out.println(text);
+    //    words = new ArrayList<>(Arrays.asList(text.split("\\s")));
     }
 
     public String toString(){
         return text;
     }
 
-    public ArrayList<String> getWords() {
-        return words;
+    public int getNumberOfPages() { return pages.size();}
+
+    public ArrayList<String> getWords(int pageNumber) {
+        return pages.get(pageNumber).getWords();
     }
 }

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="iText">
+    <CLASSES>
+      <root url="file://$USER_HOME$/POproject/iText" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$USER_HOME$/POproject/iText/src" />
+    </SOURCES>
+  </library>
+</component>
