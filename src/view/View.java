@@ -40,6 +40,8 @@ public class View extends Application {
         App.setView(this);
 
         this.primaryStage = primaryStage;
+        primaryStage.setMinHeight(400);
+        primaryStage.setMinWidth(600);
         primaryStage.setTitle("Hello World!");
 
         openButton = new Button();
@@ -53,13 +55,14 @@ public class View extends Application {
         fileChooser = new FileChooser();
 
         mainHBox = new HBox();
+        mainHBox.setPadding(new Insets(30, 0, 0, 0));
         mainHBox.getChildren().add(gridPane);
         mainHBox.setId("mainHBox");
 
         popupPane = new GridPane();
-        popupPane.setPickOnBounds(false);
-        popupPane.setMinWidth(800);
-        popupPane.setMinHeight(400);
+        popupPane.setMouseTransparent(true);
+//        popupPane.setMinWidth(800);
+//        popupPane.setMinHeight(400);
 
         stackPane = new StackPane();
         stackPane.getChildren().add(mainHBox);
@@ -106,9 +109,9 @@ public class View extends Application {
     public void showPopup(double x, double y, String message) {
         if(popupPane.getChildren().size()!=0)
             popupPane.getChildren().remove(0);
-        popupPane.add(new Button(message), 0, 0);
+        popupPane.add(new PopupButton(message), 0, 0);
         popupPane.getChildren().get(0).setTranslateX(x);
-        popupPane.getChildren().get(0).setTranslateY(y);
+        popupPane.getChildren().get(0).setTranslateY(y-30);
     }
 
     public void deletePopups() {

@@ -3,6 +3,7 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Tooltip;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import model.Model;
