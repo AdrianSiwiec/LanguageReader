@@ -111,6 +111,10 @@ public class View extends Application {
         popupPane.getChildren().get(0).setTranslateY(y);
     }
 
+    public void deletePopups() {
+        popupPane.getChildren().clear();
+    }
+
     public Stage getPrimaryStage() {
         return primaryStage;
     }

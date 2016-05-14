@@ -10,8 +10,11 @@ public class WordButton extends Button{
     public WordButton(String text) {
         super(text);
         setId("wordButton");
-        setOnMouseEntered(event -> {
-            App.getController().showPopup(this);
-        });
+        setOnMouseClicked(event ->
+            App.getController().showPopup(this)
+        );
+        setOnMouseExited(event ->
+            App.getController().deletePopups()
+        );
     }
 }

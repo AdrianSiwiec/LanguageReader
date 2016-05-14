@@ -1,5 +1,7 @@
 package model;
 
+import controller.App;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -12,6 +14,12 @@ public class Page {
 
     public Page(String Text){
         words = new ArrayList<>(Arrays.asList(Text.split("\\s")));
+        App.getController().getDaemonExecutorService().execute(() -> {
+            System.out.println("Caching page translation");
+            for (String s : words)
+                App.getController().getTranslation(s);
+            System.out.println("Cached whole page translation for later use");
+        });
     }
 
     public Page(ArrayList<String> words){

@@ -11,6 +11,8 @@ import view.View;
 import view.WordButton;
 
 import java.io.File;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by pierre on 30/04/16.
@@ -18,6 +20,12 @@ import java.io.File;
 public class Controller {
     private View view;
     private Model model;
+    ExecutorService daemonExecutorService = Executors.newCachedThreadPool(r -> {
+        Thread t = Executors.defaultThreadFactory().newThread(r);
+        t.setDaemon(true);
+        return t;
+    });
+    ExecutorService executorService = Executors.newCachedThreadPool();
 
     public Controller(Model model) {
         this.model = model;
@@ -58,10 +66,27 @@ public class Controller {
 
 
     public void showPopup(WordButton button) {
-        view.showPopup(button.localToScene(0, 0).getX(), button.localToScene(0, 0).getY(), "Whatever");
+        view.showPopup(button.localToScene(0, 0).getX(), button.localToScene(0, 0).getY(),
+                model.getTranslation(button.getText()));
+    }
+
+    public void deletePopups() {
+        view.deletePopups();
+    }
+
+    public String getTranslation(String word) {
+        return model.getTranslation(word);
     }
 
     public void setView(View view) {
         this.view = view;
+    }
+
+    public ExecutorService getDaemonExecutorService() {
+        return daemonExecutorService;
+    }
+
+    public ExecutorService getExecutorService() {
+        return executorService;
     }
 }
