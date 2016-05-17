@@ -3,13 +3,12 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.control.Tooltip;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import model.Model;
 import model.TextContainer;
+import view.OurButton;
 import view.View;
-import view.WordButton;
 
 import java.io.File;
 import java.util.concurrent.ExecutorService;
@@ -21,6 +20,7 @@ import java.util.concurrent.Executors;
 public class Controller {
     private View view;
     private Model model;
+    private boolean paginationStatus = false;
     ExecutorService daemonExecutorService = Executors.newCachedThreadPool(r -> {
         Thread t = Executors.defaultThreadFactory().newThread(r);
         t.setDaemon(true);
@@ -52,6 +52,12 @@ public class Controller {
         view.changePageInPagination(new PaginationControl());
     }
 
+    public void PaginationStatus(){
+        if(paginationStatus == true)
+            view.deletePagination();
+        paginationStatus =  true;
+    }
+
     public class PaginationControl implements Callback<Integer, Node> {
         final int numberOfPages=model.getText().getNumberOfPages();
         final TextContainer text = model.getText();
@@ -65,10 +71,9 @@ public class Controller {
         }
     }
 
-
-    public void showPopup(WordButton button) {
+    public void showPopup(OurButton button) {
         view.showPopup(button.localToScene(0, 0).getX(), button.localToScene(0, 0).getY(),
-                model.getTranslation(button.getText()));
+                button.type == 0 ? model.getTranslation(button.getText()) : button.getText());
     }
 
     public void deletePopups() {

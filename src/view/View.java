@@ -91,17 +91,25 @@ public class View extends Application {
     public void changePageInPagination(Callback<Integer, javafx.scene.Node> callback) { pagination.setPageFactory(callback);};
 
     public void createPagination(int numberOfPages){
+        App.getController().PaginationStatus();
         pagination = new Pagination(numberOfPages);
         pagination.setMaxPageIndicatorCount(5);
         App.getController().paginationSetPageFactory();
         mainHBox.getChildren().add(pagination);
     }
 
+    public void deletePagination(){
+        mainHBox.getChildren().remove(pagination);
+    }
+
     public FlowPane showText(TextContainer text, int pageNumber) {
         wordsPane = new FlowPane();
         wordsPane.setId("wordsPane");
         for(int i=0; i<400 && i<text.getWords(pageNumber).size(); i++) {
-            wordsPane.getChildren().add(new WordButton(text.getWords(pageNumber).get(i)));
+            if(text.getWords(pageNumber).get(i).getType() == (Integer)0)
+                wordsPane.getChildren().add(new WordButton(text.getWords(pageNumber).get(i).getWord()));
+            else
+                wordsPane.getChildren().add(new NotWordButton(text.getWords(pageNumber).get(i).getWord()));
         }
         return wordsPane;
     }

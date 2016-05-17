@@ -1,9 +1,8 @@
 package model;
 
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.parser.PdfTextExtractor;
-import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
-import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
+import com.itextpdf.text.pdf.parser.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,17 +29,31 @@ public class TextContainer {
         }
         try {
             PdfReader reader = new PdfReader(filename);
-            TextExtractionStrategy strategy= new SimpleTextExtractionStrategy();
+            PdfReaderContentParser parser = new PdfReaderContentParser(reader);
+            TextExtractionStrategy strategy;
+            //Rectangle rect = new Rectangle(50, 50, 490, 490);
+            //   RenderFilter filter = new RegionTextRenderFilter(rect);
+            TextMarginFinder finder;
             StringBuilder builder = new StringBuilder();
             System.out.println("Reading pdf: "+file.toString()+"\nIt has "+reader.getNumberOfPages()+" pages");
-            String pageNumber;
+           // String pageNumber;
             pages=new ArrayList<>();
             for(int page = 1; page<=reader.getNumberOfPages(); page++) {
+                finder = parser.processContent(page, new TextMarginFinder());
+                Rectangle rec = new Rectangle(finder.getLlx(), finder.getLly(),
+                        finder.getWidth(), finder.getHeight());
+
                 PdfReader reader1=new PdfReader(filename);
                 reader1.selectPages(String.valueOf(page));
-                builder.append(PdfTextExtractor.getTextFromPage(reader, page, strategy));
+                Rectangle cropbox = reader.getCropBox(page);
+                RenderFilter filter = new RegionTextRenderFilter(cropbox);
+                strategy = new FilteredTextRenderListener(new LocationTextExtractionStrategy(), filter);
+              //  strategy = parser.processContent(page, new LocationTextExtractionStrategy());
 
-                Page nextPage=new Page(PdfTextExtractor.getTextFromPage(reader1, 1).toString());
+            //    builder.append(PdfTextExtractor.getTextFromPage(reader, page, strategy));
+               // Page nextPage = new Page(strategy.getResultantText());
+                Page nextPage=new Page(PdfTextExtractor.getTextFromPage(reader1, 1, strategy).toString());
+               // PdfTextExtractor.getTextFromPage(reader, page, new SemText());
                 pages.add(nextPage);
               /*  pageNumber=Integer.toString(page)+".txt";
                 File out=new File(pageNumber);
@@ -63,7 +76,7 @@ public class TextContainer {
 
     public int getNumberOfPages() { return pages.size();}
 
-    public ArrayList<String> getWords(int pageNumber) {
+    public ArrayList<Pair<String, Integer>> getWords(int pageNumber) {
         return pages.get(pageNumber).getWords();
     }
 }

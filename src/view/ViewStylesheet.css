@@ -4,7 +4,7 @@
 #wordButton {
     -fx-font-weight: normal;
     -fx-background-color: white;
-    -fx-padding: 1 2;
+    -fx-padding: 0 1;
 }
 #wordButton:hover {
     -fx-background-color: deepskyblue;
@@ -17,4 +17,10 @@
 }
 #popupButton {
     -fx-background-color: darkgray;
+}
+
+#NotWordButton {
+    -fx-font-weight: normal;
+    -fx-background-color: white;
+    -fx-padding: 0 0 0 0;
 }
