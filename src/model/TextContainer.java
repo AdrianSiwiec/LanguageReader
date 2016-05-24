@@ -15,6 +15,7 @@ public class TextContainer {
     private String text;
     private ArrayList<String> words;
     private ArrayList<Page> pages;
+    public String filname = null;
     public TextContainer(File file) {
         String filename = file.getAbsolutePath();
         String extension = "";
@@ -28,6 +29,7 @@ public class TextContainer {
             return;
         }
         try {
+            filname = file.getName();
             PdfReader reader = new PdfReader(filename);
             PdfReaderContentParser parser = new PdfReaderContentParser(reader);
             TextExtractionStrategy strategy;
@@ -61,8 +63,8 @@ public class TextContainer {
                 fw.write(PdfTextExtractor.getTextFromPage(reader1, 1).toString());
                 fw.close();*/
             }
-            PageFactory PF = new PageFactory(300, pages);
-            pages = PF.refactorCollection();
+            //PageFactory PF = new PageFactory(400, pages);
+            //pages = PF.refactorCollection();
             text = builder.toString();
         } catch (IOException e) {
             e.printStackTrace();
@@ -76,7 +78,7 @@ public class TextContainer {
 
     public int getNumberOfPages() { return pages.size();}
 
-    public ArrayList<Pair<String, Integer>> getWords(int pageNumber) {
+    public ArrayList<String> getWords(int pageNumber) {
         return pages.get(pageNumber).getWords();
     }
 }

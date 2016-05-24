@@ -13,74 +13,53 @@ import java.util.Arrays;
 public class Page {
 
     private ArrayList<String> words;
-    private ArrayList<Pair<String, Integer>> splited;
     public Page(String Text){
-        words = new ArrayList(Arrays.asList(Text.split("\\s+")));
-        splited = new ArrayList<>();
-        process();
+        words = new ArrayList(Arrays.asList(Text.split("[ \t\\x0B\f\r]+")));
+        refactor();
         App.getController().getDaemonExecutorService().execute(() -> {
             System.out.println("Caching page translation");
-            for (Pair<String, Integer> s : splited) {
-                if(s.getType() == (Integer)0)
-                    App.getController().getTranslation(s.getWord());
+            for (String s : words) {
+                if(!s.equals("\n"))
+                    App.getController().getTranslation(s);
             }
             System.out.println("Cached whole page translation for later use");
         });
     }
 
-    public Page(ArrayList<Pair<String, Integer>> splited){
-        this.splited = splited;
+    public Page(ArrayList<String> words){
+        this.words = words;
     }
 
-
-    public void process(){
-
-        for(String x : words){
-            if(x.matches("[a-zA-Z']+"))
-                splited.add(new Pair<>(x+" ", 0));
-            else{
-                int i=0;
-                boolean which=true;
-                StringBuilder y = new StringBuilder();
-                while(i<x.length()){
-                    char c = x.charAt(i);
-                    if(c=='\'' || Character.isLetter(c)) {
-                        if(which) {
-                            y.append(c);
-                        }
-                        else{
-                            splited.add(new Pair<>(y.toString(), 1));
-                            y = new StringBuilder();
-                            y.append(c);
-                            which = true;
-                        }
-                    }
-                    else{
-                        if(which){
-                            splited.add(new Pair<>(y.toString(), 0));
-                            y = new StringBuilder();
-                            y.append(c);
-                            which = false;
-                        }
-                        else
-                            y.append(c);
-                    }
-                    i++;
+    private void refactor(){
+        ArrayList<String> word = new ArrayList<>();
+        for(String s: words){
+            if(s.lastIndexOf('\n')!=-1){
+                boolean czy = false;
+                int x = s.lastIndexOf('\n');
+                int y = s.indexOf('\n');
+                String a = s.substring(0, y);
+                word.add(a);
+                int licznik=0;
+                while(licznik < (x-y+1)){
+                    word.add("\n");
+                    licznik++;
                 }
-                if(which)
-                    splited.add(new Pair<>(y.toString(), 0));
-                else
-                    splited.add(new Pair<>(y.toString(), 1));
+                if(x+1<s.length()) {
+                    a = s.substring(x+1, s.length());
+                    word.add(a);
+                }
             }
+            else
+                word.add(s);
         }
-        System.out.println(splited.size());
+        words = word;
     }
 
     public int getNumberOfWords(){
-        return splited.size();
+        return words.size();
     }
 
-    public ArrayList<Pair<String, Integer>> getWords(){
-        return splited;
+    public ArrayList<String> getWords(){
+        return words;
     }
 }

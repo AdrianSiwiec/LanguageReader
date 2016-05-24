@@ -10,10 +10,14 @@
     -fx-background-color: deepskyblue;
 }
 #wordsPane {
-    -fx-min-width: 500px;
+    -fx-min-width: 500;
 }
 #mainHBox{
     -fx-min-width: 500;
+}
+#mainVBox{
+    -fx-min-width: 500;
+    -fx-background-color: gray;
 }
 #popupButton {
     -fx-background-color: darkgray;

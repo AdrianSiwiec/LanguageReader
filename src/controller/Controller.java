@@ -43,6 +43,7 @@ public class Controller {
             File file = fileChooser.showOpenDialog(view.getPrimaryStage());
             model.openFile(file);
             TextContainer text = model.getText();
+            view.name = text.filname;
             view.createPagination(text.getNumberOfPages());
           //  view.showText(text, 0);
         }

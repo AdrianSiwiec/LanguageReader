@@ -21,8 +21,8 @@ public class PageFactory {
             return next;
         }
         else{
-            ArrayList<Pair<String, Integer>> temp = next.getWords();
-            ArrayList<Pair<String, Integer>> temp2 = new ArrayList<>();
+            ArrayList<String> temp = next.getWords();
+            ArrayList<String> temp2 = new ArrayList<>();
             for(int i=position; i<position+wordsPerPage && i<temp.size(); i++){
                 temp2.add(temp.get(i));
             }
