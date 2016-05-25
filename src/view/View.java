@@ -140,7 +140,7 @@ public class View extends Application {
 
 
     public void deletePagination(){
-        stackPane.getChildren().remove(pagination);
+        stackPane.getChildren().remove(anchor);
         stackPane.getChildren().add(text);
     }
 
