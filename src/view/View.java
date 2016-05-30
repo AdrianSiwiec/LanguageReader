@@ -150,11 +150,10 @@ public class View extends Application {
         wordsPane = new FlowPane();
         wordsPane.setId("wordsPane");
         vBox.setId("linesVBox");
-        for(int i=0; i<text.getWords(pageNumber).size(); i++) {
+        for(int i=0; i<text.getLines(pageNumber).size(); i++) {
             HBox tempHBox = new HBox();
-            while(i < text.getWords(pageNumber).size() && !text.getWords(pageNumber).get(i).equals("\n")){
-                tempHBox.getChildren().add(new WordButton(text.getWords(pageNumber).get(i)));
-                i++;
+            for (int j = 0; j < text.getLines(pageNumber).get(i).size(); j++) {
+                tempHBox.getChildren().add(new WordButton(text.getLines(pageNumber).get(i).get(j)));
             }
             vBox.getChildren().add(tempHBox);
         }

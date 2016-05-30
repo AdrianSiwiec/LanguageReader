@@ -7,46 +7,37 @@ import java.util.ArrayList;
  * Created by pawel on 10.05.16.
  */
 public class PageFactory {
-    int wordsPerPage;
+    int linesPerPage;
+    private ArrayList<Lines> linesList;
     private ArrayList<Page> pages;
     private ArrayList<Page> smallPages;
-    PageFactory(int wordsPerPage, ArrayList<Page> pages){
-        this.wordsPerPage=wordsPerPage;
+
+    PageFactory(int linesPerPage, ArrayList<Page> pages){
+        this.linesPerPage = linesPerPage;
         this.pages=pages;
         smallPages=new ArrayList<>();
+        linesList = new ArrayList<>();
     }
 
-    private Page refactorPage(Page next, int position){
-        if(next.getNumberOfWords()<=wordsPerPage){
-            return next;
-        }
-        else{
-            ArrayList<String> temp = next.getWords();
-            ArrayList<String> temp2 = new ArrayList<>();
-            for(int i=position; i<position+wordsPerPage && i<temp.size(); i++){
-                temp2.add(temp.get(i));
+    private void concatLines(Page next){
+        for(Lines l : next.getLines()){
+            if(linesList.size() < linesPerPage){
+                linesList.add(l);
             }
-            Page newOne=new Page(temp2);
-            return newOne;
+            else{
+                smallPages.add(new Page(linesList));
+                linesList = new ArrayList<>();
+                linesList.add(l);
+            }
         }
-
     }
+
     private void refactorList(){
         for(Page p : pages){
-            int number=0;
-            Page temp = refactorPage(p, number);
-            number = temp.getNumberOfWords();
-            if(number == p.getNumberOfWords()){
-                smallPages.add(p);
-            }
-            else {
-                smallPages.add(temp);
-                while (number < p.getNumberOfWords()){
-                    temp = refactorPage(p, number);
-                    number += temp.getNumberOfWords();
-                    smallPages.add(temp);
-                }
-            }
+            concatLines(p);
+        }
+        if(linesList.size() < linesPerPage){
+            smallPages.add(new Page(linesList));
         }
     }
     public ArrayList<Page> refactorCollection(){

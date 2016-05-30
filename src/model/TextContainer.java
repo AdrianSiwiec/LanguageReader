@@ -38,7 +38,7 @@ public class TextContainer {
             TextMarginFinder finder;
             StringBuilder builder = new StringBuilder();
             System.out.println("Reading pdf: "+file.toString()+"\nIt has "+reader.getNumberOfPages()+" pages");
-           // String pageNumber;
+            // String pageNumber;
             pages=new ArrayList<>();
             for(int page = 1; page<=reader.getNumberOfPages(); page++) {
                 finder = parser.processContent(page, new TextMarginFinder());
@@ -50,12 +50,12 @@ public class TextContainer {
                 Rectangle cropbox = reader.getCropBox(page);
                 RenderFilter filter = new RegionTextRenderFilter(cropbox);
                 strategy = new FilteredTextRenderListener(new LocationTextExtractionStrategy(), filter);
-              //  strategy = parser.processContent(page, new LocationTextExtractionStrategy());
+                //  strategy = parser.processContent(page, new LocationTextExtractionStrategy());
 
-            //    builder.append(PdfTextExtractor.getTextFromPage(reader, page, strategy));
-               // Page nextPage = new Page(strategy.getResultantText());
+                //    builder.append(PdfTextExtractor.getTextFromPage(reader, page, strategy));
+                // Page nextPage = new Page(strategy.getResultantText());
                 Page nextPage=new Page(PdfTextExtractor.getTextFromPage(reader1, 1, strategy).toString());
-               // PdfTextExtractor.getTextFromPage(reader, page, new SemText());
+                // PdfTextExtractor.getTextFromPage(reader, page, new SemText());
                 pages.add(nextPage);
               /*  pageNumber=Integer.toString(page)+".txt";
                 File out=new File(pageNumber);
@@ -63,13 +63,13 @@ public class TextContainer {
                 fw.write(PdfTextExtractor.getTextFromPage(reader1, 1).toString());
                 fw.close();*/
             }
-            //PageFactory PF = new PageFactory(400, pages);
-            //pages = PF.refactorCollection();
+            PageFactory PF = new PageFactory(20, pages);
+            pages = PF.refactorCollection();
             text = builder.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    //    words = new ArrayList<>(Arrays.asList(text.split("\\s")));
+        //    words = new ArrayList<>(Arrays.asList(text.split("\\s")));
     }
 
     public String toString(){
@@ -81,4 +81,6 @@ public class TextContainer {
     public ArrayList<String> getWords(int pageNumber) {
         return pages.get(pageNumber).getWords();
     }
+
+    public ArrayList<Lines> getLines(int pageNumber) { return pages.get(pageNumber).getLines(); }
 }

@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 
 public class Page {
-
+    private ArrayList<Lines> linesArray;
     private ArrayList<String> words;
     public Page(String Text){
         words = new ArrayList(Arrays.asList(Text.split("[ \t\\x0B\f\r]+")));
@@ -26,12 +26,18 @@ public class Page {
         });
     }
 
-    public Page(ArrayList<String> words){
-        this.words = words;
+    public Page(ArrayList<Lines> linesArray) { this.linesArray = linesArray; }
+
+    private String find(String a){
+        ArrayList<String> bum = new ArrayList(Arrays.asList(a.split("\\P{Alpha}+")));
+        return bum.get(0);
     }
+
 
     private void refactor(){
         ArrayList<String> word = new ArrayList<>();
+        ArrayList<Lines> lines = new ArrayList<>();
+        Lines line = new Lines();
         for(String s: words){
             if(s.lastIndexOf('\n')!=-1){
                 boolean czy = false;
@@ -39,27 +45,37 @@ public class Page {
                 int y = s.indexOf('\n');
                 String a = s.substring(0, y);
                 word.add(a);
-                int licznik=0;
-                while(licznik < (x-y+1)){
-                    word.add("\n");
-                    licznik++;
-                }
+                line.add(a);
+                lines.add(line);
+                line = new Lines();
+                word.add("\n");
                 if(x+1<s.length()) {
                     a = s.substring(x+1, s.length());
                     word.add(a);
+                    line.add(a);
                 }
             }
-            else
+            else {
                 word.add(s);
+                line.add(s);
+            }
         }
+        lines.add(line);
         words = word;
+        linesArray = lines;
     }
 
     public int getNumberOfWords(){
         return words.size();
     }
 
+    public int getNumberOfLines(){
+        return linesArray.size();
+    }
+
     public ArrayList<String> getWords(){
         return words;
     }
+
+    public ArrayList<Lines> getLines() { return linesArray; }
 }
