@@ -23,4 +23,8 @@ public class Lines {
     public int size(){
         return line.size();
     }
+
+    public ArrayList<String> getList() {
+        return line;
+    }
 }

@@ -78,6 +78,12 @@ public class TextContainer {
 
     public int getNumberOfPages() { return pages.size();}
 
+    public void cacheTranslation(int pagenumber) {
+        if(pages.get(pagenumber)!=null) {
+            pages.get(pagenumber).cacheTranslation();
+        }
+    }
+
     public ArrayList<String> getWords(int pageNumber) {
         return pages.get(pageNumber).getWords();
     }

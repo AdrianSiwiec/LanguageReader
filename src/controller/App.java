@@ -1,6 +1,7 @@
 package controller;
 
 
+import model.MicrosoftTranslator;
 import model.Model;
 import view.View;
 
@@ -17,6 +18,7 @@ public class App {
 //        view = new View();
         model = new Model();
         controller = new Controller(model);
+        controller.setTranslator(new MicrosoftTranslator());
 
         new View().launchView(args);
 
@@ -34,8 +36,8 @@ public class App {
 }
 
 //public class App extends Application {
-//    private String path=new String();
-//    public static void main(String[] args) {
+//    private LanguageClass path=new LanguageClass();
+//    public static void main(LanguageClass[] args) {
 //        launch(args);
 //    }
 //
@@ -71,7 +73,7 @@ public class App {
 //
 //
 //        path = new File(".").getAbsolutePath();
-//        String textFile=prepareFile(1);
+//        LanguageClass textFile=prepareFile(1);
 //        Text text=new Text();
 //        text.setFont(new Font(12));
 //        grid.add(text, 1, 1, 10, 10);
@@ -86,12 +88,12 @@ public class App {
 //        System.out.println("DONE INIT");
 //    }
 //
-//    private String readFile(String pathname) throws IOException {
+//    private LanguageClass readFile(LanguageClass pathname) throws IOException {
 //
 //        File file = new File(pathname);
 //        StringBuilder fileContents = new StringBuilder((int) file.length());
 //        Scanner scanner = new Scanner(file);
-//        String lineSeparator = System.getProperty("line.separator");
+//        LanguageClass lineSeparator = System.getProperty("line.separator");
 //
 //        try {
 //            while (scanner.hasNextLine()) {
@@ -102,8 +104,8 @@ public class App {
 //            scanner.close();
 //        }
 //    }
-//    private String prepareFile(int pageNumber){
-//        String A, B, C=new String();
+//    private LanguageClass prepareFile(int pageNumber){
+//        LanguageClass A, B, C=new LanguageClass();
 //        B=path.substring(0, path.length()-1);
 //        B=B+Integer.toString(pageNumber)+".txt";
 //        try{

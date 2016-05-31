@@ -15,6 +15,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import model.LanguageClass;
 import model.TextContainer;
 
 
@@ -35,10 +36,11 @@ public class View extends Application {
     AnchorPane anchor;
     Pagination pagination;
     MenuBar menuBar;
-    Menu menuFile, menuEdit, menuView;
+    Menu menuFile, menuLanguage, menuView, languagesTo, languagesFrom;
     MenuItem open;
     Text text;
-    public String name = "Language Reader";
+    int currentPageNumber;
+    public java.lang.String name = "Language Reader";
     @Override
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Starting View");
@@ -55,12 +57,22 @@ public class View extends Application {
 
         menuBar = new MenuBar();
         menuFile = new Menu("File");
-        menuEdit = new Menu("Edit");
+        menuLanguage = new Menu("Set Language");
         menuView = new Menu("View");
         open = new MenuItem("Open");
         menuFile.getItems().addAll(open);
 
-        menuBar.getMenus().addAll(menuFile, menuEdit, menuView);
+        languagesFrom = new Menu("Source Language");
+        languagesTo = new Menu("Translation Language");
+
+        menuLanguage.getItems().addAll(languagesFrom, languagesTo);
+
+        for(LanguageClass lang: App.getController().getAvailableLanguages()) {
+            languagesFrom.getItems().add(new LanguageMenuItem(lang));
+            languagesTo.getItems().add(new LanguageMenuItem(lang));
+        }
+
+        menuBar.getMenus().addAll(menuFile, menuLanguage, menuView);
 
         gridPane = new GridPane();
         gridPane.setPadding(new Insets(0, 0, 0, 0));
@@ -110,7 +122,7 @@ public class View extends Application {
         System.out.println("View successfully started");
     }
 
-    public void launchView(String args[]) {
+    public void launchView(java.lang.String args[]) {
         launch(args);
     }
 
@@ -118,7 +130,13 @@ public class View extends Application {
         open.setOnAction(eventHandler);
     }
 
-    public void changePageInPagination(Callback<Integer, javafx.scene.Node> callback) { pagination.setPageFactory(callback);};
+    public void addLanguageButtonListener(LanguageMenuItem menuItem, EventHandler<ActionEvent> eventHandler) {
+        menuItem.setOnAction(eventHandler);
+    }
+
+    public void changePageInPagination(Callback<Integer, javafx.scene.Node> callback) {
+        pagination.setPageFactory(callback);
+    }
 
     public void createPagination(int numberOfPages){
         App.getController().PaginationStatus();
@@ -145,6 +163,7 @@ public class View extends Application {
     }
 
     public VBox showText(TextContainer text, int pageNumber) {
+        currentPageNumber = pageNumber;
         VBox vBox = new VBox(3);
         vBox.setPadding(new Insets(0, 10, 5, 5));
         wordsPane = new FlowPane();
@@ -157,10 +176,15 @@ public class View extends Application {
             }
             vBox.getChildren().add(tempHBox);
         }
+        text.cacheTranslation(pageNumber);
         return vBox;
     }
 
-    public void showPopup(double x, double y, String message) {
+    public int getCurrentPageNumber() {
+        return currentPageNumber;
+    }
+
+    public void showPopup(double x, double y, java.lang.String message) {
         if(popupPane.getChildren().size()!=0)
             popupPane.getChildren().remove(0);
         popupPane.add(new PopupButton(message), 0, 0);
@@ -170,6 +194,18 @@ public class View extends Application {
 
     public void deletePopups() {
         popupPane.getChildren().clear();
+    }
+
+    public Menu getLanguagesFrom() {
+        return languagesFrom;
+    }
+
+    public Text getText() {
+        return text;
+    }
+
+    public Menu getLanguagesTo() {
+        return languagesTo;
     }
 
     public Stage getPrimaryStage() {

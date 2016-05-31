@@ -16,13 +16,38 @@ public class Page {
     public Page(String Text){
         words = new ArrayList(Arrays.asList(Text.split("[ \t\\x0B\f\r]+")));
         refactor();
+    }
+
+    public void cacheTranslation() {
+        if(words!=null)
+            internalCacheTranslation(words);
+        if(linesArray!=null)
+            internalCacheTranslation(linesArray, 0);
+    }
+
+    private void internalCacheTranslation(ArrayList<String> list) {
         App.getController().getDaemonExecutorService().execute(() -> {
+
             System.out.println("Caching page translation");
-            for (String s : words) {
+            for (String s : list) {
                 if(!s.equals("\n"))
                     App.getController().getTranslation(s);
             }
             System.out.println("Cached whole page translation for later use");
+        });
+    }
+
+    private void internalCacheTranslation(ArrayList<Lines> list, Integer integer) {
+        App.getController().getDaemonExecutorService().execute(() -> {
+            System.out.println("Caching page translation for later");
+            for(Lines l: list) {
+                for(String s: l.getList()) {
+                    if(!s.equals("\n"))
+                        App.getController().getTranslation(s);
+                }
+            }
+            System.out.println("Cached whole page translation for later use");
+            App.getController().serializeDictionary();
         });
     }
 

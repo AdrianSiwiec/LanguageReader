@@ -3,14 +3,16 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
-import model.Model;
-import model.TextContainer;
+import model.*;
+import view.LanguageMenuItem;
 import view.OurButton;
 import view.View;
 
 import java.io.File;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -32,8 +34,20 @@ public class Controller {
         this.model = model;
     }
 
+    public void setTranslator(LanguageTranslator translator){
+        model.setTranslator(translator);
+    }
+
     public void addListeners() {
         view.addOpenFileListener(new OpenFileListener());
+        for(MenuItem lang: view.getLanguagesFrom().getItems()) {
+            view.addLanguageButtonListener((LanguageMenuItem) lang,
+                    new LanguageButtonListener(((LanguageMenuItem) lang).getLanguagePair(), true));
+        }
+        for(MenuItem lang: view.getLanguagesTo().getItems()) {
+            view.addLanguageButtonListener((LanguageMenuItem) lang,
+                    new LanguageButtonListener(((LanguageMenuItem) lang).getLanguagePair(), false));
+        }
     }
 
     public class OpenFileListener implements EventHandler<ActionEvent> {
@@ -47,6 +61,29 @@ public class Controller {
             view.createPagination(text.getNumberOfPages());
           //  view.showText(text, 0);
         }
+    }
+
+    public class LanguageButtonListener implements EventHandler<ActionEvent> {
+        LanguageClass language;
+        boolean type;
+        LanguageButtonListener(LanguageClass language, boolean type) {
+            this.language = language;
+            this.type = type;
+        }
+        @Override
+        public void handle(ActionEvent event) {
+            if(type) {
+                model.setLanguageFrom(language);
+            } else {
+                model.setLanguageTo(language);
+            }
+            cacheCurrentPage();
+        }
+    }
+
+    public void cacheCurrentPage() {
+        if(model.getText()!=null)
+            model.getText().cacheTranslation(view.getCurrentPageNumber());
     }
 
     public void paginationSetPageFactory() {
@@ -77,11 +114,15 @@ public class Controller {
                 button.type == 0 ? model.getTranslation(button.getText()) : button.getText());
     }
 
+    public void serializeDictionary() {
+        model.serializeDictionary();
+    }
+
     public void deletePopups() {
         view.deletePopups();
     }
 
-    public String getTranslation(String word) {
+    public java.lang.String getTranslation(java.lang.String word) {
         return model.getTranslation(word);
     }
 
@@ -95,5 +136,9 @@ public class Controller {
 
     public ExecutorService getExecutorService() {
         return executorService;
+    }
+
+    public List<LanguageClass> getAvailableLanguages(){
+        return model.getAvailableLanguages();
     }
 }
