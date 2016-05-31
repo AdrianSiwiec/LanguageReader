@@ -1,5 +1,6 @@
 package view;
 
+import com.itextpdf.text.pdf.fonts.otf.Language;
 import controller.App;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -49,7 +50,7 @@ public class View extends Application {
     Pagination pagination;
     MenuBar menuBar;
     Menu menuFile, menuLanguage, fontStyle, fontSize, menuView, languagesTo, languagesFrom;
-    public ToggleGroup fontStyleToggleGroup, fontSizeToggleGroup;
+    public ToggleGroup fontStyleToggleGroup, fontSizeToggleGroup, languagesToToggleGroup, languagesFromToggleGroup;
     MenuItem open;
     Text text;
     int currentPageNumber;
@@ -57,7 +58,7 @@ public class View extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Starting View");
-        Font.loadFont(View.class.getResource("LiberationSerif-Italic.ttf").toExternalForm(), 14);
+//        Font.loadFont(View.class.getResource("LiberationSerif-Italic.ttf").toExternalForm(), 14);
         App.setView(this);
 
         this.primaryStage = primaryStage;
@@ -70,7 +71,7 @@ public class View extends Application {
 
         menuBar = new MenuBar();
         menuFile = new Menu("File");
-        menuLanguage = new Menu("Set Language");
+        menuLanguage = new Menu("Language");
         menuView = new Menu("View");
         open = new MenuItem("Open");
         fontSize = new Menu("Font Size");
@@ -80,6 +81,8 @@ public class View extends Application {
 
         languagesFrom = new Menu("Source Language");
         languagesTo = new Menu("Translation Language");
+        languagesFromToggleGroup = new ToggleGroup();
+        languagesToToggleGroup = new ToggleGroup();
 
         menuLanguage.getItems().addAll(languagesFrom, languagesTo);
 
@@ -87,6 +90,10 @@ public class View extends Application {
             languagesFrom.getItems().add(new LanguageMenuItem(lang));
             languagesTo.getItems().add(new LanguageMenuItem(lang));
         }
+        languagesFrom.getItems().forEach(menuItem -> ((LanguageMenuItem)menuItem).setToggleGroup(languagesFromToggleGroup));
+        languagesTo.getItems().forEach(menuItem -> ((LanguageMenuItem)menuItem).setToggleGroup(languagesToToggleGroup));
+        ((LanguageMenuItem)languagesFrom.getItems().get(0)).setSelected(true);
+        ((LanguageMenuItem)languagesTo.getItems().get(1)).setSelected(true);
 
         fontStyleToggleGroup = new ToggleGroup();
         for(String s: listaStyle){
