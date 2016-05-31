@@ -6,6 +6,9 @@ import controller.App;
 import javafx.event.ActionEvent;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -117,11 +120,30 @@ public class MicrosoftTranslator implements LanguageTranslator {
             new File("cache").mkdirs();
             FileInputStream fileIn = new FileInputStream(getSerializationFilename(getTranslatorName(language)));
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            alreadyTranslated.put(language,  (ConcurrentHashMap<String, String>) in.readObject());
+            alreadyTranslated.put(language, (ConcurrentHashMap<String, String>) in.readObject());
             in.close();
             fileIn.close();
             lastSerializationSize.put(language, alreadyTranslated.get(language).keySet().size());
-            System.out.println("Deserialization succesful, dictionary size: "+alreadyTranslated.get(currentLanguages).keySet().size());
+            new File("cache/backup").mkdirs();
+            Files.copy(Paths.get(getSerializationFilename(getTranslatorName(language))),
+                    Paths.get(getSerializationBackupFilename(getTranslatorName(language))), StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("Deserialization succesful, dictionary size: " + alreadyTranslated.get(currentLanguages).keySet().size());
+        }
+        catch (EOFException e) {
+            System.out.println("Dictionary corrupted, trying to fix");
+            try {
+                Files.copy(Paths.get(getSerializationBackupFilename(getTranslatorName(language))),
+                        Paths.get(getSerializationFilename(getTranslatorName(language))),
+                        StandardCopyOption.REPLACE_EXISTING);
+            } catch (Exception f) {
+                System.out.println("Dictionary fix did not helped, deleting dictionary");
+                try {
+                    Files.delete(Paths.get(getSerializationFilename(getTranslatorName(language))));
+                } catch (Exception g) {
+                    //
+                }
+            }
+            deserialize(language);
         } catch (Exception e) {
             System.out.println("Deserialization Failed while trying to read: "+getSerializationFilename(getTranslatorName(language)));
             e.printStackTrace();
@@ -135,6 +157,10 @@ public class MicrosoftTranslator implements LanguageTranslator {
 
     private String getSerializationFilename(String translatorLanguage) {
         return "cache/"+translatorLanguage+".ser";
+    }
+
+    private String getSerializationBackupFilename(String translatorLanguage) {
+        return "cache/backup/"+translatorLanguage+".ser";
     }
 
     static {
