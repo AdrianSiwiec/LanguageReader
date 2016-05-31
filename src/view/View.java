@@ -1,6 +1,5 @@
 package view;
 
-import com.itextpdf.text.pdf.fonts.otf.Language;
 import controller.App;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -32,7 +31,6 @@ public class View extends Application {
     public static Integer i =0;
     public String fontSiz = new String("12");
     public String fontStyl = new String("MetalMacabre");
-    String fonts = "Arial,Times New Roman,Book Antique,Verdana";
     String size = "8,10,12,14,16,18,20";
     List<String> listaStyle = Font.getFamilies();
 
@@ -116,6 +114,8 @@ public class View extends Application {
             item.setUserData(s);
             item.setToggleGroup(fontSizeToggleGroup);
             fontSize.getItems().add(item);
+            if(s.equals("12"))
+                item.setSelected(true);
         }
 
         menuBar.getMenus().addAll(menuFile, menuLanguage, menuView);
@@ -131,7 +131,7 @@ public class View extends Application {
                 "To open pdf file, choose: File -> Open\n");
 
         text.setFill(Color.BLACK);
-        text.setFont(Font.font("Metal Macabre", 14));
+        text.setFont(Font.font(14));
 
         fileChooser = new FileChooser();
         mainVBox = new VBox();

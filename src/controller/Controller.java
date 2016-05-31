@@ -160,7 +160,7 @@ public class Controller {
 
     public void showPopup(OurButton button) {
         view.showPopup(button.localToScene(0, 0).getX(), button.localToScene(0, 0).getY(),
-                button.type == 0 ? model.getTranslation(button.getText()) : button.getText());
+                button.type == 0 ? model.getTranslation(button.getText().replaceAll("[^A-Za-z]+", "")) : button.getText());
     }
 
     public void serializeDictionary() {
