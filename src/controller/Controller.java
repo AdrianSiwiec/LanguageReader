@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
@@ -56,6 +57,14 @@ public class Controller {
         for(MenuItem lang: view.getLanguagesTo().getItems()) {
             view.addLanguageButtonListener((LanguageMenuItem) lang,
                     new LanguageButtonListener(((LanguageMenuItem) lang).getLanguagePair(), false));
+        }
+        view.getScene().setOnKeyPressed(this::handldeKeyPress);
+    }
+
+    public void handldeKeyPress(KeyEvent keyEvent) {
+        switch (keyEvent.getCode()) {
+            case ADD:
+                view.getPagination().setCurrentPageIndex(view.getPagination().getCurrentPageIndex()-1);
         }
     }
 

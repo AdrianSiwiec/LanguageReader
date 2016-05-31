@@ -67,7 +67,7 @@ public class TextContainer {
             pages = PF.refactorCollection();
             text = builder.toString();
         } catch (IOException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         //    words = new ArrayList<>(Arrays.asList(text.split("\\s")));
     }

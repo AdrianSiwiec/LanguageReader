@@ -55,6 +55,11 @@ public class View extends Application {
     Text text;
     int currentPageNumber;
     public java.lang.String name = "Language Reader";
+
+    public void main(String args[]) {
+        App.main(args);
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Starting View");
@@ -157,7 +162,7 @@ public class View extends Application {
         scene = new Scene(mainVBox);
 
         primaryStage.setScene(scene);
-        primaryStage.setWidth(450);
+        primaryStage.setWidth(850);
         stackPane.setMinSize(300, 300);
         stackPane.setAlignment(text, Pos.CENTER);
         primaryStage.show();
@@ -268,12 +273,20 @@ public class View extends Application {
         return languagesFrom;
     }
 
+    public Pagination getPagination() {
+        return pagination;
+    }
+
     public Text getText() {
         return text;
     }
 
     public Menu getLanguagesTo() {
         return languagesTo;
+    }
+
+    public Scene getScene() {
+        return scene;
     }
 
     public Stage getPrimaryStage() {
