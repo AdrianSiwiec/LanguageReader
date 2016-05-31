@@ -2,6 +2,7 @@ package view;
 
 import controller.App;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,12 +19,23 @@ import javafx.util.Callback;
 import model.LanguageClass;
 import model.TextContainer;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 /**
  * Created by pierre on 30/04/16.
  */
 public class View extends Application {
     public static Integer i =0;
+    public String fontSiz = new String("12");
+    public String fontStyl = new String("MetalMacabre");
+    String fonts = "Arial,Times New Roman,Book Antique,Verdana";
+    String size = "8,10,12,14,16,18,20";
+    List<String> listaStyle = Font.getFamilies();
+
+    ArrayList<String> listaSize = new ArrayList(Arrays.asList(size.split("[,]+")));
     Scene scene;
     Button openButton;
     GridPane gridPane, popupPane;
@@ -36,7 +48,8 @@ public class View extends Application {
     AnchorPane anchor;
     Pagination pagination;
     MenuBar menuBar;
-    Menu menuFile, menuLanguage, menuView, languagesTo, languagesFrom;
+    Menu menuFile, menuLanguage, fontStyle, fontSize, menuView, languagesTo, languagesFrom;
+    public ToggleGroup fontStyleToggleGroup, fontSizeToggleGroup;
     MenuItem open;
     Text text;
     int currentPageNumber;
@@ -44,7 +57,7 @@ public class View extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Starting View");
-
+        Font.loadFont(View.class.getResource("LiberationSerif-Italic.ttf").toExternalForm(), 14);
         App.setView(this);
 
         this.primaryStage = primaryStage;
@@ -60,6 +73,9 @@ public class View extends Application {
         menuLanguage = new Menu("Set Language");
         menuView = new Menu("View");
         open = new MenuItem("Open");
+        fontSize = new Menu("Font Size");
+        fontStyle = new Menu("Font Style");
+        menuView.getItems().addAll(fontSize, fontStyle);
         menuFile.getItems().addAll(open);
 
         languagesFrom = new Menu("Source Language");
@@ -70,6 +86,23 @@ public class View extends Application {
         for(LanguageClass lang: App.getController().getAvailableLanguages()) {
             languagesFrom.getItems().add(new LanguageMenuItem(lang));
             languagesTo.getItems().add(new LanguageMenuItem(lang));
+        }
+
+        fontStyleToggleGroup = new ToggleGroup();
+        for(String s: listaStyle){
+            RadioMenuItem item = new RadioMenuItem(s);
+            item.setUserData(s);
+            item.setToggleGroup(fontStyleToggleGroup);
+            item.setStyle("-fx-font-family: "+ "\""+s+"\""+";");
+            fontStyle.getItems().add(item);
+        }
+
+        fontSizeToggleGroup = new ToggleGroup();
+        for(String s: listaSize){
+            RadioMenuItem item = new RadioMenuItem(s);
+            item.setUserData(s);
+            item.setToggleGroup(fontSizeToggleGroup);
+            fontSize.getItems().add(item);
         }
 
         menuBar.getMenus().addAll(menuFile, menuLanguage, menuView);
@@ -85,7 +118,7 @@ public class View extends Application {
                 "To open pdf file, choose: File -> Open\n");
 
         text.setFill(Color.BLACK);
-        text.setFont(Font.font("Book Antiqua", 14));
+        text.setFont(Font.font("Metal Macabre", 18));
 
         fileChooser = new FileChooser();
         mainVBox = new VBox();
@@ -118,6 +151,8 @@ public class View extends Application {
         scene.getStylesheets().add(View.class.getResource("ViewStylesheet.css").toExternalForm());
 
         App.getController().addListeners();
+        App.getController().addFontStyle();
+        App.getController().addFontSize();
 
         System.out.println("View successfully started");
     }
@@ -137,6 +172,8 @@ public class View extends Application {
     public void changePageInPagination(Callback<Integer, javafx.scene.Node> callback) {
         pagination.setPageFactory(callback);
     }
+
+
 
     public void createPagination(int numberOfPages){
         App.getController().PaginationStatus();
@@ -172,13 +209,22 @@ public class View extends Application {
         for(int i=0; i<text.getLines(pageNumber).size(); i++) {
             HBox tempHBox = new HBox();
             for (int j = 0; j < text.getLines(pageNumber).get(i).size(); j++) {
-                tempHBox.getChildren().add(new WordButton(text.getLines(pageNumber).get(i).get(j)));
+                WordButton word = new WordButton(text.getLines(pageNumber).get(i).get(j));
+                word.setStyle("-fx-font-size: "+ fontSiz+"pt; "+
+                        "-fx-font-family: "+ "\""+fontStyl+"\""+";"+
+                        "-fx-background-color: white; -fx-padding: 1 2;"
+                );
+                tempHBox.getChildren().add(word);
             }
             vBox.getChildren().add(tempHBox);
         }
         text.cacheTranslation(pageNumber);
         return vBox;
     }
+
+    public void selectTogglePropertyStyleView(ChangeListener<Toggle> change) { fontStyleToggleGroup.selectedToggleProperty().addListener(change);  }
+
+    public void selectTogglePropertySizeView(ChangeListener<Toggle> change) { fontSizeToggleGroup.selectedToggleProperty().addListener(change);  }
 
     public int getCurrentPageNumber() {
         return currentPageNumber;

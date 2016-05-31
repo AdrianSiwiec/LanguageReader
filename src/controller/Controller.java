@@ -1,12 +1,19 @@
 package controller;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
-import model.*;
+import model.LanguageClass;
+import model.LanguageTranslator;
+import model.Model;
+import model.TextContainer;
 import view.LanguageMenuItem;
 import view.OurButton;
 import view.View;
@@ -78,6 +85,37 @@ public class Controller {
                 model.setLanguageTo(language);
             }
             cacheCurrentPage();
+        }
+    }
+
+    public void addFontStyle() { view.selectTogglePropertyStyleView(new SelectTogglePropertyStyle()); }
+
+    public class SelectTogglePropertyStyle implements ChangeListener<Toggle> {
+        final ToggleGroup group = view.fontStyleToggleGroup;
+        @Override
+        public void changed(ObservableValue<? extends Toggle> on, Toggle oldToggle, Toggle newToggle){
+            if(group.getSelectedToggle() != null) {
+                System.out.println("dziala");
+                view.fontStyl = newToggle.getUserData().toString();
+                //   if(paginationStatus)
+                System.out.println(view.fontStyl);
+                //  newToggle.setSelected(true);
+            }
+        }
+    }
+
+    public void addFontSize() { view.selectTogglePropertySizeView(new SelectTogglePropertySize()); }
+
+    public class SelectTogglePropertySize implements ChangeListener<Toggle> {
+        final ToggleGroup group = view.fontSizeToggleGroup;
+        @Override
+        public void changed(ObservableValue<? extends Toggle> on, Toggle oldToggle, Toggle newToggle){
+            //System.out.println(group.getSelectedToggle().getUserData().toString());
+            if(group.getSelectedToggle() != null) {
+                view.fontSiz = newToggle.getUserData().toString();
+                System.out.println(view.fontSiz);
+                newToggle.setSelected(true);
+            }
         }
     }
 
