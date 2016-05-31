@@ -146,7 +146,7 @@ public class MicrosoftTranslator implements LanguageTranslator {
             deserialize(language);
         } catch (Exception e) {
             System.out.println("Deserialization Failed while trying to read: "+getSerializationFilename(getTranslatorName(language)));
-            e.printStackTrace();
+//            e.printStackTrace();
             alreadyTranslated.put(language, new ConcurrentHashMap<>());
         }
     }
@@ -171,8 +171,6 @@ public class MicrosoftTranslator implements LanguageTranslator {
         availableLanguages.add(new LanguageClass("Arabic","ar"));
         availableLanguages.add(new LanguageClass("Bulgarian","bg"));
         availableLanguages.add(new LanguageClass("Catalan","ca"));
-        availableLanguages.add(new LanguageClass("Chinese Simplified","zh-chs"));
-        availableLanguages.add(new LanguageClass("Chinese Traditional","zh-cht"));
         availableLanguages.add(new LanguageClass("Czech","cs"));
         availableLanguages.add(new LanguageClass("Danish","da"));
         availableLanguages.add(new LanguageClass("Dutch","nl"));

@@ -3,11 +3,13 @@ package controller;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import model.LanguageClass;
@@ -22,6 +24,7 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.SynchronousQueue;
 
 /**
  * Created by pierre on 30/04/16.
@@ -54,6 +57,14 @@ public class Controller {
         for(MenuItem lang: view.getLanguagesTo().getItems()) {
             view.addLanguageButtonListener((LanguageMenuItem) lang,
                     new LanguageButtonListener(((LanguageMenuItem) lang).getLanguagePair(), false));
+        }
+        view.getScene().setOnKeyPressed(this::handldeKeyPress);
+    }
+
+    public void handldeKeyPress(KeyEvent keyEvent) {
+        switch (keyEvent.getCode()) {
+            case ADD:
+                view.getPagination().setCurrentPageIndex(view.getPagination().getCurrentPageIndex()-1);
         }
     }
 

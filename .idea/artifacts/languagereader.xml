@@ -1,0 +1,33 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="languagereader">
+    <output-path>$PROJECT_DIR$/out/artifacts/languagereader</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="view.View" />
+        <option name="description" value="" />
+        <option name="htmlParamFile" value="" />
+        <option name="paramFile" value="" />
+        <option name="title" value="LanguageReader" />
+        <option name="vendor" value="" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="languagereader.jar">
+        <element id="module-output" name="languagereader" />
+      </element>
+      <element id="file-copy" path="$PROJECT_DIR$/lib/itext-5.5.9/itextpdf-5.5.9.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/itext-5.5.9/xmlworker-5.5.9.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/itext-5.5.9/itext-pdfa-5.5.9.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/itext-5.5.9/itext-xtra-5.5.9.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/itext-5.5.9/itextpdf-5.5.9-javadoc.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/itext-5.5.9/itextpdf-5.5.9-sources.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/itext-5.5.9/xmlworker-5.5.9-javadoc.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/itext-5.5.9/xmlworker-5.5.9-sources.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/itext-5.5.9/itext-pdfa-5.5.9-javadoc.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/itext-5.5.9/itext-pdfa-5.5.9-sources.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/itext-5.5.9/itext-xtra-5.5.9-javadoc.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/itext-5.5.9/itext-xtra-5.5.9-sources.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/lib/microsoft-translator-java-api-0.6.2/microsoft-translator-java-api-0.6.2-jar-with-dependencies.jar" />
+    </root>
+  </artifact>
+</component>
