@@ -31,7 +31,7 @@ public class Page {
             System.out.println("Caching page translation");
             for (String s : list) {
                 if(!s.equals("\n")) {
-                    String c = s.replaceAll("[^A-Za-z]+", "");
+                    String c = s.replaceAll("[^A-Za-z']+", "");
                     App.getController().getTranslation(c);
                 }
             }
@@ -45,7 +45,7 @@ public class Page {
             for(Lines l: list) {
                 for(String s: l.getList()) {
                     if(!s.equals("\n")) {
-                        String c = s.replaceAll("[^A-Za-z]+", "");
+                        String c = s.replaceAll("[^A-Za-z']+", "");
                         App.getController().getTranslation(s);
                     }
                 }

@@ -8,6 +8,8 @@ import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import model.LanguageClass;
@@ -149,15 +151,33 @@ public class Controller {
 
     public void showPopup(OurButton button) {
         view.showPopup(button.localToScene(0, 0).getX(), button.localToScene(0, 0).getY(),
-                button.type == 0 ? model.getTranslation(button.getText().replaceAll("[^A-Za-z]+", "")) : button.getText());
+                button.type == 0 ? model.getTranslation(button.getText().replaceAll("[^A-Za-z']+", "")) : button.getText());
     }
 
-    public void serializeDictionary() {
-        model.serializeDictionary();
-    }
+
 
     public void deletePopups() {
         view.deletePopups();
+    }
+
+    public EventHandler<MouseEvent> buttonClick(OurButton button){
+        return new ContextMenuClick(button);
+    }
+    class ContextMenuClick implements EventHandler<MouseEvent>{
+        OurButton button;
+        ContextMenuClick(OurButton button){
+            this.button = button;
+        }
+        @Override
+        public void handle(MouseEvent e){
+            if(e.getButton() == MouseButton.SECONDARY)
+                view.addContextMenu(e.getScreenX(), e.getScreenY(), button);
+            if(e.getButton() == MouseButton.PRIMARY)
+                showPopup(button);
+        }
+    }
+    public void serializeDictionary() {
+        model.serializeDictionary();
     }
 
     public java.lang.String getTranslation(java.lang.String word) {

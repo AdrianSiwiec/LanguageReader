@@ -48,7 +48,8 @@ public class View extends Application {
     Pagination pagination;
     MenuBar menuBar;
     ScrollPane sp;
-    Menu menuFile, menuLanguage, fontStyle, fontSize, menuView, languagesTo, languagesFrom;
+    Menu menuFile, menuLanguage, fontStyle, fontSize, menuView, languagesTo, languagesFrom, addToFile;
+    ContextMenu contextMenu;
     public ToggleGroup fontStyleToggleGroup, fontSizeToggleGroup, languagesToToggleGroup, languagesFromToggleGroup;
     MenuItem open;
     Text text;
@@ -114,6 +115,10 @@ public class View extends Application {
         }
 
         menuBar.getMenus().addAll(menuFile, menuLanguage, menuView);
+
+        contextMenu = new ContextMenu();
+        addToFile = new Menu("Add word to file");
+        contextMenu.getItems().add(addToFile);
 
         gridPane = new GridPane();
         gridPane.setPadding(new Insets(0, 0, 0, 0));
@@ -249,6 +254,10 @@ public class View extends Application {
         popupPane.add(new PopupButton(message), 0, 0);
         popupPane.getChildren().get(0).setTranslateX(x);
         popupPane.getChildren().get(0).setTranslateY(y-10);
+    }
+
+    public void addContextMenu(double x, double y, OurButton button){
+        contextMenu.show(button, x+10, y+10);
     }
 
     public void deletePopups() {
