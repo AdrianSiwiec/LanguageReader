@@ -48,6 +48,7 @@ public class View extends Application {
     AnchorPane anchor;
     Pagination pagination;
     MenuBar menuBar;
+    ScrollPane sp;
     Menu menuFile, menuLanguage, fontStyle, fontSize, menuView, languagesTo, languagesFrom;
     public ToggleGroup fontStyleToggleGroup, fontSizeToggleGroup;
     MenuItem open;
@@ -57,7 +58,7 @@ public class View extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Starting View");
-        Font.loadFont(View.class.getResource("LiberationSerif-Italic.ttf").toExternalForm(), 14);
+       // Font.loadFont(View.class.getResource("LiberationSerif-Italic.ttf").toExternalForm(), 14);
         App.setView(this);
 
         this.primaryStage = primaryStage;
@@ -118,7 +119,7 @@ public class View extends Application {
                 "To open pdf file, choose: File -> Open\n");
 
         text.setFill(Color.BLACK);
-        text.setFont(Font.font("Metal Macabre", 18));
+        text.setFont(Font.font("Metal Macabre", 14));
 
         fileChooser = new FileChooser();
         mainVBox = new VBox();
@@ -149,7 +150,6 @@ public class View extends Application {
         stackPane.setAlignment(text, Pos.CENTER);
         primaryStage.show();
         scene.getStylesheets().add(View.class.getResource("ViewStylesheet.css").toExternalForm());
-
         App.getController().addListeners();
         App.getController().addFontStyle();
         App.getController().addFontSize();
@@ -181,6 +181,11 @@ public class View extends Application {
         pagination.setMaxPageIndicatorCount(5);
         App.getController().paginationSetPageFactory();
         anchor = new AnchorPane();
+        sp = new ScrollPane();
+        sp.setContent(pagination);
+        sp.fitToHeightProperty();
+        sp.fitToWidthProperty();
+        sp.setStyle("-fx-background:white;");
         AnchorPane.setTopAnchor(pagination, 20.0);
         AnchorPane.setRightAnchor(pagination, 20.0);
         AnchorPane.setBottomAnchor(pagination, 10.0);
@@ -189,6 +194,7 @@ public class View extends Application {
         stackPane.getChildren().remove(text);
         stackPane.getChildren().remove(popupPane);
         stackPane.getChildren().add(anchor);
+        stackPane.getChildren().add(sp);
         stackPane.setAlignment(anchor, Pos.TOP_CENTER);
         stackPane.getChildren().add(popupPane);
     }

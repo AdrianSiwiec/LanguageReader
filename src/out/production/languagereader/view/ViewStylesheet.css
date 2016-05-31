@@ -22,7 +22,13 @@
 #popupButton {
     -fx-background-color: darkgray;
 }
+#pagination{
+    -fx-background-color: white;
+}
 
+#anchor{
+    -fx-color: white;
+}
 #NotWordButton {
     -fx-font-weight: normal;
     -fx-background-color: white;
