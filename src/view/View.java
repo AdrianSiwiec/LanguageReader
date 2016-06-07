@@ -268,7 +268,7 @@ public class View extends Application {
     }
 
     public void addContextMenu(double x, double y, OurButton button){
-        contextMenu.show(button, x+5, y+5);
+        contextMenu.show(button, x+10, y+5);
     }
 
     public void addWordToFile(EventHandler<ActionEvent> eventHandler){
