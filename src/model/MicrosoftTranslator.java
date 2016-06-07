@@ -99,6 +99,16 @@ public class MicrosoftTranslator implements LanguageTranslator {
             App.getController().getExecutorService().execute(() -> this.serialize(new LanguagePair(currentLanguages)));
     }
 
+    @Override
+    public void deserialize() {
+        //todo
+    }
+
+    @Override
+    public void correctWord(String word, String translation) {
+        //todo
+    }
+
     private void serialize(LanguagePair language) {
         try {
             new File("cache").mkdirs();

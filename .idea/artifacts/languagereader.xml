@@ -28,6 +28,8 @@
       <element id="file-copy" path="$PROJECT_DIR$/lib/itext-5.5.9/itext-xtra-5.5.9-javadoc.jar" />
       <element id="file-copy" path="$PROJECT_DIR$/lib/itext-5.5.9/itext-xtra-5.5.9-sources.jar" />
       <element id="file-copy" path="$PROJECT_DIR$/lib/microsoft-translator-java-api-0.6.2/microsoft-translator-java-api-0.6.2-jar-with-dependencies.jar" />
+      <element id="file-copy" path="$PROJECT_DIR$/run.sh" />
+      <element id="file-copy" path="$PROJECT_DIR$/Harry.pdf" />
     </root>
   </artifact>
 </component>

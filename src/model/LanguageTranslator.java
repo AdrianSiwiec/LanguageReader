@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,4 +12,7 @@ public interface LanguageTranslator {
     void setLanguageTo(LanguageClass lang);
     void setLanguageFrom(LanguageClass lang);
     void serialize();
+    void deserialize();
+    void correctWord(String word, String translation);
+    ArrayList<Serializer> serializers = new ArrayList<>();
 }
