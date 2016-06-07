@@ -9,8 +9,6 @@ import java.util.List;
 public class Model {
     TextContainer text;
 
-
-
     LanguageTranslator translator;
 
     public void openFile(File file) {
@@ -22,7 +20,7 @@ public class Model {
     }
 
     public String getTranslation(String word) {
-        return translator.translate(word);
+        return translator.translate(word.replaceAll("[^A-Za-z']+", ""));
     }
 
     public void serializeDictionary() {
