@@ -11,6 +11,8 @@ public interface LanguageTranslator {
     List<LanguageClass> getAvailableLanguages();
     void setLanguageTo(LanguageClass lang);
     void setLanguageFrom(LanguageClass lang);
+    String getLanguageFrom();
+    String getLanguageTo();
     void serialize();
     void deserialize();
     void correctWord(String word, String translation);

@@ -13,10 +13,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
-import model.LanguageClass;
-import model.LanguageTranslator;
-import model.Model;
-import model.TextContainer;
+import model.*;
 import view.LanguageMenuItem;
 import view.OurButton;
 import view.View;
@@ -32,6 +29,8 @@ import java.util.concurrent.Executors;
 public class Controller {
     private View view;
     private Model model;
+    public WordsToFile newFile = new WordsToFile("eng", "pl", "txt");
+    private OurButton currentButton = null;
     private boolean paginationStatus = false;
     ExecutorService daemonExecutorService = Executors.newCachedThreadPool(r -> {
         Thread t = Executors.defaultThreadFactory().newThread(r);
@@ -92,8 +91,14 @@ public class Controller {
         public void handle(ActionEvent event) {
             if(type) {
                 model.setLanguageFrom(language);
+                if(newFile!=null)
+                    newFile.export();
+                newFile = new WordsToFile(model.getLanguageFrom(), model.getLanguageTo(), "txt");
             } else {
                 model.setLanguageTo(language);
+                if(newFile!=null)
+                    newFile.export();
+                newFile = new WordsToFile(model.getLanguageFrom(), model.getLanguageTo(), "txt");
             }
             cacheCurrentPage();
         }
@@ -108,6 +113,7 @@ public class Controller {
             if(group.getSelectedToggle() != null) {
                 System.out.println("dziala");
                 view.fontStyl = newToggle.getUserData().toString();
+                view.reloadPage();
                 //   if(paginationStatus)
                 System.out.println(view.fontStyl);
                 //  newToggle.setSelected(true);
@@ -124,6 +130,7 @@ public class Controller {
             //System.out.println(group.getSelectedToggle().getUserData().toString());
             if(group.getSelectedToggle() != null) {
                 view.fontSiz = newToggle.getUserData().toString();
+                view.reloadPage();
                 System.out.println(view.fontSiz);
                 newToggle.setSelected(true);
             }
@@ -158,29 +165,52 @@ public class Controller {
         }
     }
 
+
     public void showPopup(OurButton button) {
         view.showPopup(button.localToScene(0, 0).getX(), button.localToScene(0, 0).getY(),
                 button.type == 0 ? model.getTranslation(button.getText().replaceAll("[^A-Za-z']+", "")) : button.getText());
     }
 
-
-
     public void deletePopups() {
         view.deletePopups();
+    }
+
+    public class AddWord implements EventHandler<ActionEvent>{
+        final OurButton ourButton;
+        AddWord(OurButton ourButton){
+            this.ourButton = ourButton;
+        }
+        @Override
+        public void handle(ActionEvent event) {
+           // System.out.println(ourButton.getText()+":)");
+             newFile.addWord(ourButton.getText(), getTranslation(ourButton.getText()));
+        }
+
+    }
+
+    public void addWordToTranslation(OurButton button){
+        view.addWordToFile(new AddWord(button));
     }
 
     public EventHandler<MouseEvent> buttonClick(OurButton button){
         return new ContextMenuClick(button);
     }
+
     class ContextMenuClick implements EventHandler<MouseEvent>{
         OurButton button;
+        public EventHandler<ActionEvent> actionEvent;
         ContextMenuClick(OurButton button){
             this.button = button;
+            currentButton = button;
+            actionEvent = new AddWord(button);
+            System.out.println(currentButton.getText());
         }
         @Override
         public void handle(MouseEvent e){
-            if(e.getButton() == MouseButton.SECONDARY)
+            if(e.getButton() == MouseButton.SECONDARY) {
                 view.addContextMenu(e.getScreenX(), e.getScreenY(), button);
+                addWordToTranslation(button);
+            }
             if(e.getButton() == MouseButton.PRIMARY)
                 showPopup(button);
         }

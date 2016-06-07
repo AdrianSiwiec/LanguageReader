@@ -3,7 +3,6 @@ package model;
 import com.memetix.mst.language.Language;
 import com.memetix.mst.translate.Translate;
 import controller.App;
-import javafx.event.ActionEvent;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -54,6 +53,27 @@ public class MicrosoftTranslator implements LanguageTranslator {
             }
             return false;
         }
+        public String getFrom(){
+            String name = null;
+            try{
+                name = from.getName(Language.ENGLISH);
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+            return name;
+        }
+
+        public String getTo(){
+            String name = null;
+            try{
+                name = to.getName(Language.ENGLISH);
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+            return name;
+        }
     }
 
     @Override
@@ -92,6 +112,16 @@ public class MicrosoftTranslator implements LanguageTranslator {
             alreadyTranslated.put(currentLanguages, new ConcurrentHashMap<>());
         }
         App.getController().getDaemonExecutorService().execute(() -> deserialize(new LanguagePair(currentLanguages)));
+    }
+
+    @Override
+    public String getLanguageFrom(){
+        return currentLanguages.getFrom();
+    }
+
+    @Override
+    public String getLanguageTo(){
+        return currentLanguages.getTo();
     }
 
     public void serialize() {

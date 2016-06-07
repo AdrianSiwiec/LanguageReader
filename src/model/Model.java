@@ -37,6 +37,10 @@ public class Model {
         translator.setLanguageTo(lang);
     }
 
+    public String getLanguageFrom(){ return translator.getLanguageFrom(); }
+
+    public String getLanguageTo() {return translator.getLanguageTo(); }
+
     public void setTranslator(LanguageTranslator translator) {
         this.translator = translator;
     }

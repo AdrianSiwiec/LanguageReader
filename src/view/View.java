@@ -48,12 +48,12 @@ public class View extends Application {
     Pagination pagination;
     MenuBar menuBar;
     ScrollPane sp;
-    Menu menuFile, menuLanguage, fontStyle, fontSize, menuView, languagesTo, languagesFrom, addToFile;
+    Menu menuFile, menuLanguage, fontStyle, fontSize, menuView, languagesTo, languagesFrom;
     ContextMenu contextMenu;
     public ToggleGroup fontStyleToggleGroup, fontSizeToggleGroup, languagesToToggleGroup, languagesFromToggleGroup;
-    MenuItem open;
+    MenuItem open, addToFile;
     Text text;
-    int currentPageNumber;
+    int currentPageNumber, numberOfPage;
     public java.lang.String name = "Language Reader";
 
     public void main(String args[]) {
@@ -122,7 +122,7 @@ public class View extends Application {
         menuBar.getMenus().addAll(menuFile, menuLanguage, menuView);
 
         contextMenu = new ContextMenu();
-        addToFile = new Menu("Add word to file");
+        addToFile = new MenuItem("Add word to file");
         contextMenu.getItems().add(addToFile);
 
         gridPane = new GridPane();
@@ -190,10 +190,9 @@ public class View extends Application {
         pagination.setPageFactory(callback);
     }
 
-
-
     public void createPagination(int numberOfPages){
         App.getController().PaginationStatus();
+        numberOfPage = numberOfPages;
         pagination = new Pagination(numberOfPages);
         pagination.setMaxPageIndicatorCount(5);
         App.getController().paginationSetPageFactory();
@@ -216,6 +215,11 @@ public class View extends Application {
         stackPane.getChildren().add(popupPane);
     }
 
+    public void reloadPage(){
+        int x = pagination.getCurrentPageIndex();
+        pagination.setCurrentPageIndex((pagination.getCurrentPageIndex()+1)%numberOfPage);
+        pagination.setCurrentPageIndex(x);
+    }
 
     public void deletePagination(){
         stackPane.getChildren().remove(anchor);
@@ -223,7 +227,8 @@ public class View extends Application {
     }
 
     public VBox showText(TextContainer text, int pageNumber) {
-        currentPageNumber = pageNumber;
+     //   currentPageNumber = pageNumber;
+        System.out.println(pageNumber + ":)");
         VBox vBox = new VBox(3);
         vBox.setPadding(new Insets(0, 10, 5, 5));
         wordsPane = new FlowPane();
@@ -237,6 +242,7 @@ public class View extends Application {
                         "-fx-font-family: "+ "\""+fontStyl+"\""+";"+
                         "-fx-background-color: white; -fx-padding: 1 2;"
                 );
+
                 tempHBox.getChildren().add(word);
             }
             vBox.getChildren().add(tempHBox);
@@ -262,8 +268,13 @@ public class View extends Application {
     }
 
     public void addContextMenu(double x, double y, OurButton button){
-        contextMenu.show(button, x+10, y+10);
+        contextMenu.show(button, x+5, y+5);
     }
+
+    public void addWordToFile(EventHandler<ActionEvent> eventHandler){
+        addToFile.setOnAction(eventHandler);
+    }
+
 
     public void deletePopups() {
         popupPane.getChildren().clear();

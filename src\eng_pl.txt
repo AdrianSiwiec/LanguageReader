@@ -1,0 +1,3 @@
+want: potrzeba
+believe: uwierzyć
+patted: poklepał

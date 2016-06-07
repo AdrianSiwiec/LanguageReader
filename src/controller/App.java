@@ -21,7 +21,8 @@ public class App {
         controller.setTranslator(new MicrosoftTranslator());
 
         new View().launchView(args);
-
+        if(controller.newFile!=null)
+            controller.newFile.export();
         System.out.println("Exiting application");
     }
 

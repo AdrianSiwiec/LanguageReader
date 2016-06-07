@@ -1,13 +1,13 @@
 .root {
     -fx-background-color: white;
 }
-#wordButton {
+#WordButton {
     -fx-font-weight: normal;
     -fx-background-color: white;
     -fx-padding: 0 1;
 }
-#wordButton:hover {
-    -fx-background-color: deepskyblue;
+#WordButton:hover {
+    -fx-background-color: blue;
 }
 #wordsPane {
     -fx-min-width: 500;
