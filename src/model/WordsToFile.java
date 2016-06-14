@@ -1,6 +1,8 @@
 package model;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -22,20 +24,18 @@ public class WordsToFile implements ExportWords{
         this.to = to;
         fileName = from+'_'+to+'.'+extension;
         String userDirectory = Paths.get(".").toAbsolutePath().normalize().toString();
-        path = userDirectory+"\\"+fileName;
-        createFile();
+        path = userDirectory+"/"+fileName;
+      //  System.out.println(path + " "+whatToDo);
         mapa = new HashMap<>();
+        createFile();
+        System.out.println(path + " "+whatToDo);
+        if(!whatToDo){
+            readFromFile();
+        }
     }
     @Override
     public void addWord(String word, String translation){
-        if(mapa.containsKey(word)){
-            if(!mapa.get(word).equals(translation)){
-                mapa.remove(word);
-                mapa.put(word, translation);
-            }
-        }
-        else
-            mapa.put(word, translation);
+        mapa.put(word, translation);
     }
     @Override
     public void export(){
@@ -55,9 +55,8 @@ public class WordsToFile implements ExportWords{
             StringBuilder nowy = new StringBuilder();
             while (it.hasNext()) {
                 Map.Entry pair = (Map.Entry) it.next();
-               // System.out.println(pair.getKey() + " = " + pair.getValue());
-                String para = pair.getKey() + ": " + pair.getValue() + "\n";
-                System.out.println(para);
+                String para = pair.getKey() + "; " + pair.getValue() + "\n";
+            //    System.out.println(para);
                 nowy.append(para);
                 it.remove();
             }
@@ -73,12 +72,40 @@ public class WordsToFile implements ExportWords{
                 e.printStackTrace();
             }
         }
+        System.out.println("zupa mleczna");
     }
 
     public void createFile(){
         file = new File(path);
         try{
             whatToDo = file.createNewFile();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void readFromFile(){
+        System.out.println("cos");
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(file));
+            try{
+                StringBuilder sb = new StringBuilder();
+                String line = br.readLine();
+                while(line != null){
+                    int pos = line.indexOf(';');
+                    mapa.put(line.substring(0, pos), line.substring(pos+2));
+                    line = br.readLine();
+                }
+
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+            finally {
+                br.close();
+            }
         }
         catch(Exception e){
             e.printStackTrace();

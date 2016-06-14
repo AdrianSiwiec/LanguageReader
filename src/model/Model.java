@@ -23,6 +23,8 @@ public class Model {
         return translator.translate(word.replaceAll("[^A-Za-z']+", ""));
     }
 
+    public String getProperWord(String word) { return word.replaceAll("[^A-Za-z']+", ""); }
+
     public void serializeDictionary() {
         translator.serialize();
     }

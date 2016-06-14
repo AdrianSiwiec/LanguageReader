@@ -29,7 +29,7 @@ import java.util.concurrent.Executors;
 public class Controller {
     private View view;
     private Model model;
-    public WordsToFile newFile = new WordsToFile("eng", "pl", "txt");
+    public WordsToFile newFile = new WordsToFile("English", "Polish", "txt");
     private OurButton currentButton = null;
     private boolean paginationStatus = false;
     ExecutorService daemonExecutorService = Executors.newCachedThreadPool(r -> {
@@ -68,6 +68,7 @@ public class Controller {
     }
 
     public class OpenFileListener implements EventHandler<ActionEvent> {
+        String userDir = System.getProperty("user.home");
         FileChooser fileChooser = new FileChooser();
         @Override
         public void handle(ActionEvent event) {
@@ -131,7 +132,7 @@ public class Controller {
             if(group.getSelectedToggle() != null) {
                 view.fontSiz = newToggle.getUserData().toString();
                 view.reloadPage();
-                System.out.println(view.fontSiz);
+              //  System.out.println(view.fontSiz);
                 newToggle.setSelected(true);
             }
         }
@@ -183,7 +184,7 @@ public class Controller {
         @Override
         public void handle(ActionEvent event) {
            // System.out.println(ourButton.getText()+":)");
-             newFile.addWord(ourButton.getText(), getTranslation(ourButton.getText()));
+             newFile.addWord(model.getProperWord(ourButton.getText()), getTranslation(ourButton.getText()));
         }
 
     }
@@ -203,7 +204,7 @@ public class Controller {
             this.button = button;
             currentButton = button;
             actionEvent = new AddWord(button);
-            System.out.println(currentButton.getText());
+       //     System.out.println(currentButton.getText());
         }
         @Override
         public void handle(MouseEvent e){
