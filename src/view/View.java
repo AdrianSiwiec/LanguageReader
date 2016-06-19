@@ -5,8 +5,11 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -36,18 +39,16 @@ public class View extends Application {
 
     ArrayList<String> listaSize = new ArrayList(Arrays.asList(size.split("[,]+")));
     Scene scene;
-    Button openButton;
     GridPane gridPane, popupPane;
     FlowPane wordsPane;
     FileChooser fileChooser;
-    HBox mainHBox;
     VBox mainVBox;
     Stage primaryStage;
     StackPane stackPane;
     AnchorPane anchor;
     Pagination pagination;
     MenuBar menuBar;
-    ScrollPane sp;
+    public ScrollPane sp;
     Menu menuFile, menuLanguage, fontStyle, fontSize, menuView, languagesTo, languagesFrom;
     ContextMenu contextMenu;
     public ToggleGroup fontStyleToggleGroup, fontSizeToggleGroup, languagesToToggleGroup, languagesFromToggleGroup;
@@ -171,6 +172,7 @@ public class View extends Application {
         App.getController().addFontStyle();
         App.getController().addFontSize();
 
+        App.settings.restore();
         System.out.println("View successfully started");
     }
 
@@ -198,10 +200,13 @@ public class View extends Application {
         App.getController().paginationSetPageFactory();
         anchor = new AnchorPane();
         sp = new ScrollPane();
+
         sp.setContent(pagination);
-        sp.fitToHeightProperty();
-        sp.fitToWidthProperty();
-        sp.setStyle("-fx-background:white;");
+        sp.setFitToWidth(false);
+//        sp.setStyle("-fx-background:white;");
+        sp.viewportBoundsProperty().addListener ((observable, oldValue, newValue) -> {
+            pagination.setTranslateX((newValue.getWidth()-pagination.getWidth())/2);
+        });
         AnchorPane.setTopAnchor(pagination, 20.0);
         AnchorPane.setRightAnchor(pagination, 20.0);
         AnchorPane.setBottomAnchor(pagination, 10.0);
@@ -211,7 +216,7 @@ public class View extends Application {
         stackPane.getChildren().remove(popupPane);
         stackPane.getChildren().add(anchor);
         stackPane.getChildren().add(sp);
-        stackPane.setAlignment(anchor, Pos.TOP_CENTER);
+        stackPane.setAlignment(sp, Pos.TOP_CENTER);
         stackPane.getChildren().add(popupPane);
     }
 
@@ -233,7 +238,7 @@ public class View extends Application {
         vBox.setPadding(new Insets(0, 10, 5, 5));
         wordsPane = new FlowPane();
         wordsPane.setId("wordsPane");
-        vBox.setId("linesVBox");
+//        vBox.setId("linesVBox");
         for(int i=0; i<text.getLines(pageNumber).size(); i++) {
             HBox tempHBox = new HBox();
             for (int j = 0; j < text.getLines(pageNumber).get(i).size(); j++) {
@@ -242,12 +247,16 @@ public class View extends Application {
                         "-fx-font-family: "+ "\""+fontStyl+"\""+";"+
                         "-fx-background-color: white; -fx-padding: 1 2;"
                 );
-
+                if(j!=0 && j+1<text.getLines(pageNumber).get(i).size() && text.getLines(pageNumber).get(i).size()>10) {
+                    tempHBox.setHgrow(word, Priority.SOMETIMES);
+                    word.setMaxWidth(Double.MAX_VALUE);
+                }
                 tempHBox.getChildren().add(word);
             }
             vBox.getChildren().add(tempHBox);
         }
         text.cacheTranslation(pageNumber);
+        App.settings.setPage(pageNumber);
         return vBox;
     }
 
@@ -264,7 +273,7 @@ public class View extends Application {
             popupPane.getChildren().remove(0);
         popupPane.add(new PopupButton(message), 0, 0);
         popupPane.getChildren().get(0).setTranslateX(x);
-        popupPane.getChildren().get(0).setTranslateY(y-10);
+        popupPane.getChildren().get(0).setTranslateY(y-55);
     }
 
     public void addContextMenu(double x, double y, OurButton button){

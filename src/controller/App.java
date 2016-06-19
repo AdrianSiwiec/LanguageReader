@@ -1,8 +1,10 @@
 package controller;
 
 
+import com.itextpdf.text.pdf.qrcode.Mode;
 import model.MicrosoftTranslator;
 import model.Model;
+import model.Settings;
 import view.View;
 
 
@@ -13,6 +15,7 @@ public class App {
     static View view;
     static Model model;
     static Controller controller;
+    static public Settings settings = new Settings();
     public static void main(String args[]) {
         System.out.println("Initializing application");
 //        view = new View();
@@ -21,6 +24,7 @@ public class App {
         controller.setTranslator(new MicrosoftTranslator());
 
         new View().launchView(args);
+        settings.save();
         if(controller.newFile!=null)
             controller.newFile.export();
         System.out.println("Exiting application");
@@ -28,6 +32,9 @@ public class App {
 
     public static Controller getController() {
         return controller;
+    }
+    public static Model getModel() {
+        return model;
     }
 
     public static void setView(View view) {

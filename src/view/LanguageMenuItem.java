@@ -12,12 +12,6 @@ public class LanguageMenuItem  extends RadioMenuItem{
         super(language.getName());
         this.language = language;
     }
-    public java.lang.String getLanguageName() {
-        return language.getName();
-    }
-    public java.lang.String getLanguageCode() {
-        return language.getCode();
-    }
     public LanguageClass getLanguagePair() {
         return language;
     }

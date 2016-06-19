@@ -58,6 +58,7 @@ public abstract class OnlineTranslator implements LanguageTranslator {
 
         public String getTo(){
             String name = null;
+
             try{
                 name = to.getName(Language.ENGLISH);
             }
@@ -136,7 +137,7 @@ public abstract class OnlineTranslator implements LanguageTranslator {
 
     protected class PlainSerializer implements Serializer {
         ConcurrentHashMap<LanguagePair, Integer> lastSerializationSize = new ConcurrentHashMap<>();
-        String serializationDirectory = "cache/plainSerializations/";
+        String serializationDirectory = "cache/";
         String serializationBackupDirectory = serializationDirectory + "backup/";
         String serializationExtension = ".ser";
 

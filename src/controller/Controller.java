@@ -4,6 +4,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.BoundingBox;
 import javafx.scene.Node;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Toggle;
@@ -11,6 +12,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import model.*;
@@ -20,6 +22,7 @@ import view.View;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.Exchanger;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -67,16 +70,26 @@ public class Controller {
         }
     }
 
+    public void openBook(File file) {
+        model.openFile(file);
+        TextContainer text = model.getText();
+        view.name = text.filname;
+        view.createPagination(text.getNumberOfPages());
+    }
+
+    public void setPage(int page) {
+        view.getPagination().setCurrentPageIndex(page);
+        view.reloadPage();
+    }
+
     public class OpenFileListener implements EventHandler<ActionEvent> {
         String userDir = System.getProperty("user.home");
         FileChooser fileChooser = new FileChooser();
         @Override
         public void handle(ActionEvent event) {
             File file = fileChooser.showOpenDialog(view.getPrimaryStage());
-            model.openFile(file);
-            TextContainer text = model.getText();
-            view.name = text.filname;
-            view.createPagination(text.getNumberOfPages());
+            openBook(file);
+            App.settings.setBook(file);
           //  view.showText(text, 0);
         }
     }

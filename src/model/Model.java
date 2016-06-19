@@ -1,5 +1,7 @@
 package model;
 
+import controller.App;
+
 import java.io.File;
 import java.util.List;
 
@@ -8,7 +10,6 @@ import java.util.List;
  */
 public class Model {
     TextContainer text;
-
     LanguageTranslator translator;
 
     public void openFile(File file) {
@@ -31,10 +32,12 @@ public class Model {
 
     public void setLanguageFrom(LanguageClass lang) {
         translator.setLanguageFrom(lang);
+        App.settings.setLanguageFrom(lang);
     }
 
     public void setLanguageTo(LanguageClass lang) {
         translator.setLanguageTo(lang);
+        App.settings.setLanguageTo(lang);
     }
 
     public String getLanguageFrom(){ return translator.getLanguageFrom(); }

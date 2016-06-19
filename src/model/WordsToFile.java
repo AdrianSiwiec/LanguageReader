@@ -72,7 +72,7 @@ public class WordsToFile implements ExportWords{
                 e.printStackTrace();
             }
         }
-        System.out.println("zupa mleczna");
+//        System.out.println("zupa mleczna");
     }
 
     public void createFile(){
@@ -86,7 +86,7 @@ public class WordsToFile implements ExportWords{
     }
 
     public void readFromFile(){
-        System.out.println("cos");
+//        System.out.println("cos");
         BufferedReader br = null;
         try {
             br = new BufferedReader(new FileReader(file));
