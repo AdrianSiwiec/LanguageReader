@@ -1,5 +1,6 @@
 package model;
 
+import com.memetix.mst.language.Language;
 import controller.App;
 
 import java.io.*;
@@ -49,10 +50,14 @@ public class Settings implements Serializable {
     }
 
     public void restoreLanguages(Settings tmp) {
-        languageFrom = tmp.languageFrom;
-        languageTo = tmp.languageTo; //TODO: change radio buttons to show proper language
-        App.getModel().setLanguageTo(languageTo);
-        App.getModel().setLanguageFrom(languageFrom);
+        try {
+            languageFrom = tmp.languageFrom;
+            languageTo = tmp.languageTo; //TODO: change radio buttons to show proper language
+            App.getModel().setLanguageTo(languageTo);
+            App.getModel().setLanguageFrom(languageFrom);
+        }catch (Exception e) {
+            //
+        }
     }
 
     public void restoreBook(Settings tmp) {

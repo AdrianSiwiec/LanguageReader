@@ -20,11 +20,15 @@ public class Model {
         return text;
     }
 
+    String nonLetter ="[^A-Za-zàáâäåÀÁÂÃçÇêéëèÊËÉÈïíîìÍÌÎÏñÑöòõóÓÔÕÖÒšŠúüûùÙÚÜÛÿŸýÝžŽ']";
+
     public String getTranslation(String word) {
-        return translator.translate(word.replaceAll("[^A-Za-z']+", ""));
+//        return translator.translate(word.replaceAll("[^A-Za-z']+", ""));
+        return translator.translate(word.replaceAll(nonLetter, ""));
     }
 
-    public String getProperWord(String word) { return word.replaceAll("[^A-Za-z']+", ""); }
+//    public String getProperWord(String word) { return word.replaceAll("[^A-Za-z']+", ""); }
+    public String getProperWord(String word) { return word.replaceAll(nonLetter, ""); }
 
     public void serializeDictionary() {
         translator.serialize();

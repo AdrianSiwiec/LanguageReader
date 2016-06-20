@@ -203,7 +203,7 @@ public abstract class OnlineTranslator implements LanguageTranslator {
         String serializationExtension = ".txt";
         public void serializeDictionary(LanguagePair language) {
             if(true) return; //read only
-            System.out.println("Serializing text Dictionary");
+//            System.out.println("Serializing text Dictionary");
             try {
                 new File(serializationDirectory).mkdirs();
                 PrintWriter writer = new PrintWriter(
@@ -213,27 +213,27 @@ public abstract class OnlineTranslator implements LanguageTranslator {
                 }
                 writer.close();
 
-                System.out.println("Serialization succesful");
+//                System.out.println("Serialization succesful");
             } catch (Exception e) {
-                System.out.println("Serialization unsuccesful");
+//                System.out.println("Serialization unsuccesful");
             }
         }
 
         @Override
         public void deserializeDictionary(LanguagePair language) {
-            System.out.println("Deserializing text Dictionary");
+//            System.out.println("Deserializing text Dictionary");
             try {
                 Scanner scanner = new Scanner(new File(serializationDirectory+getTranslatorName(language)+serializationExtension));
                 while(scanner.hasNextLine()) {
                     String line = scanner.nextLine();
                     alreadyTranslated.get(language).put(line.substring(0, line.lastIndexOf(";")),
                             line.substring(line.lastIndexOf(";")+1));
-                    System.out.println("Added: "+line.substring(0, line.lastIndexOf(";"))+" : "+line.substring(line.lastIndexOf(";")+1));
+//                    System.out.println("Added: "+line.substring(0, line.lastIndexOf(";"))+" : "+line.substring(line.lastIndexOf(";")+1));
                 }
 
-                System.out.println("Serialization succesful");
+//                System.out.println("Serialization succesful");
             } catch (Exception e) {
-                System.out.println("Serialization unsuccesful");
+//                System.out.println("Serialization unsuccesful");
             }
         }
     }

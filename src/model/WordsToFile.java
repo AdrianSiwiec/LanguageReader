@@ -1,9 +1,6 @@
 package model;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,7 +11,7 @@ import java.util.Map;
  */
 public class WordsToFile implements ExportWords{
 
-    String extension, from, to, fileName, path;
+    String extension, from, to, fileName, path, dirPath;
     boolean whatToDo=false;
     File file;
     HashMap<String, String> mapa;
@@ -24,11 +21,13 @@ public class WordsToFile implements ExportWords{
         this.to = to;
         fileName = from+'_'+to+'.'+extension;
         String userDirectory = Paths.get(".").toAbsolutePath().normalize().toString();
-        path = userDirectory+"/"+fileName;
+
+        dirPath = userDirectory+"/SavedWords/";
+        path = dirPath+fileName;
       //  System.out.println(path + " "+whatToDo);
         mapa = new HashMap<>();
         createFile();
-        System.out.println(path + " "+whatToDo);
+//        System.out.println(path + " "+whatToDo);
         if(!whatToDo){
             readFromFile();
         }
@@ -49,7 +48,7 @@ public class WordsToFile implements ExportWords{
             czy = false;
             e.printStackTrace();
         }
-        System.out.println(czy+" "+mapa.size());
+//        System.out.println(czy+" "+mapa.size());
         if(czy) {
             Iterator it = mapa.entrySet().iterator();
             StringBuilder nowy = new StringBuilder();
@@ -76,6 +75,7 @@ public class WordsToFile implements ExportWords{
     }
 
     public void createFile(){
+        new File(dirPath).mkdirs();
         file = new File(path);
         try{
             whatToDo = file.createNewFile();

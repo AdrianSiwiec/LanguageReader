@@ -203,7 +203,7 @@ public class View extends Application {
 
         sp.setContent(pagination);
         sp.setFitToWidth(false);
-//        sp.setStyle("-fx-background:white;");
+        sp.setStyle("-fx-background: white;");
         sp.viewportBoundsProperty().addListener ((observable, oldValue, newValue) -> {
             pagination.setTranslateX((newValue.getWidth()-pagination.getWidth())/2);
         });
@@ -233,7 +233,7 @@ public class View extends Application {
 
     public VBox showText(TextContainer text, int pageNumber) {
      //   currentPageNumber = pageNumber;
-        System.out.println(pageNumber + ":)");
+//        System.out.println(pageNumber + ":)");
         VBox vBox = new VBox(3);
         vBox.setPadding(new Insets(0, 10, 5, 5));
         wordsPane = new FlowPane();
@@ -247,7 +247,7 @@ public class View extends Application {
                         "-fx-font-family: "+ "\""+fontStyl+"\""+";"+
                         "-fx-background-color: white; -fx-padding: 1 2;"
                 );
-                if(j!=0 && j+1<text.getLines(pageNumber).get(i).size() && text.getLines(pageNumber).get(i).size()>10) {
+                if(j!=0 && j+1<text.getLines(pageNumber).get(i).size() && text.getLines(pageNumber).get(i).size()>15) {
                     tempHBox.setHgrow(word, Priority.SOMETIMES);
                     word.setMaxWidth(Double.MAX_VALUE);
                 }
